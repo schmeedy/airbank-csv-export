@@ -12,7 +12,7 @@ var lines = [
 ];
 
 function format_num(input) {
-    return Number(input.trim().replace(/(CZK| |)/g, "").replace(',', '.'));
+    return Number(input.trim().replace(/(CZK|\s)/g, "").replace(',', '.'));
 }
 
 function rows_to_lines() {
