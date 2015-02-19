@@ -12,7 +12,7 @@ var lines = [
 ];
 
 function format_num(input) {
-    return input.trim().replace(/(CZK| |)/g, "").replace(',', '.');
+    return Number(input.trim().replace(/(CZK| |)/g, "").replace(',', '.'));
 }
 
 function rows_to_lines() {
@@ -21,11 +21,11 @@ function rows_to_lines() {
     lines.push([
       $(tds[1]).text().trim().replace(/(\d\d)\.(\d\d)\.(\d\d\d\d)/, '$2/$1/$3'),
       $.map($(tds[2]).find('strong'), function(val) {return $(val).text().trim();}).join(" - "),
-      $(tds[2]).find('.uiEllipsis').text().trim(),
-      $(tds[3]).text().trim(),
+      $(tds[2]).find('.uiEllipsis').text().replace(/,/g, ' ').trim(),
+      $(tds[3]).text().replace(/,/g, ' ').trim(),
       format_num($(tds[4]).text()),
       format_num($(tds[5]).text())
-    ].map(function(i){return i.replace(/,/g, ' ')}).join(separator));
+    ].join(separator));
   });
 }
 
