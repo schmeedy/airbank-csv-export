@@ -15,7 +15,7 @@ function rows_to_lines() {
   $('.mhtTable.mhtTableLinks tr').each(function(k, row) {
     var tds = $(row).find('td');
     lines.push([
-      $(tds[1]).text().trim(),
+      $(tds[1]).text().trim().replace(/(\d\d)\.(\d\d)\.(\d\d\d\d)/, '$2/$1/$3'),
       $.map($(tds[2]).find('strong'), function(val) {return $(val).text().trim();}).join(" - "),
       $(tds[2]).find('.uiEllipsis').text().trim(),
       $(tds[3]).text().trim(),
