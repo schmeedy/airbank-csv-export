@@ -11,6 +11,10 @@ var lines = [
     ].join(separator)
 ];
 
+function format_num(input) {
+    return input.trim().replace(/(CZK| |,)/g, "");
+}
+
 function rows_to_lines() {
   $('.mhtTable.mhtTableLinks tr').each(function(k, row) {
     var tds = $(row).find('td');
@@ -19,8 +23,8 @@ function rows_to_lines() {
       $.map($(tds[2]).find('strong'), function(val) {return $(val).text().trim();}).join(" - "),
       $(tds[2]).find('.uiEllipsis').text().trim(),
       $(tds[3]).text().trim(),
-      $(tds[4]).text().trim().replace("CZK", "").replace(",", "."),
-      $(tds[5]).text().trim().replace("CZK", "").replace(",", ".")
+      format_num($(tds[4]).text()),
+      format_num($(tds[5]).text())
     ].map(function(i){return i.replace(/,/g, ' ')}).join(separator));
   });
 }
