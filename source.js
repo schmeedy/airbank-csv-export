@@ -21,7 +21,7 @@ function rows_to_lines() {
       $(tds[3]).text().trim(),
       $(tds[4]).text().trim().replace("CZK", "").replace(",", "."),
       $(tds[5]).text().trim().replace("CZK", "").replace(",", ".")
-    ].map(function(i){return i.replace(',', ' ')}).join(separator));
+    ].map(function(i){return i.replace(/,/g, ' ')}).join(separator));
   });
 }
 
