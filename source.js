@@ -2,12 +2,12 @@ var separator = ',';
 var total = parseInt($('#grid-paging .cmpInline').text().trim().replace('\/ ', ''));
 var lines = [
     [
-        "Provedení",
-        "Účet",
-        "Popis",
-        "Typ",
-        "Částka",
-        "Poplatek"
+        "Date",
+        "Payee",
+        "Category",
+        "Memo",
+        "Outflow",
+        "Inflow"
     ].join(separator)
 ];
 
@@ -18,14 +18,26 @@ function format_num(input) {
 function rows_to_lines() {
   $('.mhtTable.mhtTableLinks tr').each(function(k, row) {
     var tds = $(row).find('td');
-    lines.push([
-      $(tds[1]).text().trim().replace(/(\d\d)\.(\d\d)\.(\d\d\d\d)/, '$2/$1/$3'),
-      $.map($(tds[2]).find('strong'), function(val) {return $(val).text().trim();}).join(" - "),
-      $(tds[2]).find('.uiEllipsis').text().replace(/,/g, ' ').trim(),
-      $(tds[3]).text().replace(/,/g, ' ').trim(),
-      format_num($(tds[4]).text()),
-      format_num($(tds[5]).text())
-    ].join(separator));
+    var date = $(tds[1]).text().trim().replace(/(\d\d)\.(\d\d)\.(\d\d\d\d)/, '$2/$1/$3');
+    var account = $.map($(tds[2]).find('strong'), function(val) {return $(val).text().trim();}).join(" - ");
+    var memo = $(tds[2]).find('.uiEllipsis').text().replace(/,/g, ' ').trim();
+    var type = $(tds[3]).text().replace(/,/g, ' ').trim();
+    
+    var baseAmount = format_num($(tds[4]).text());
+    var isCredit = baseAmount > 0;
+    var fee = format_num($(tds[5]).text());
+    var totalAmount = (isCredit ? baseAmount : - baseAmount) - fee;
+
+    if (!date.startsWith('Prov')) {
+      lines.push([
+        date,
+        isCredit ? account : '',
+        '',
+        type + ': ' + memo,
+        isCredit ? '' : totalAmount,
+        isCredit ? totalAmount : ''
+      ].join(separator));
+    }
   });
 }
 
